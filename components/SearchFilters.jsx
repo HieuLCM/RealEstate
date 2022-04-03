@@ -35,7 +35,16 @@ const SearchFilters = () => {
         if (searchTerm !== '') {
             const fetchData = async () => {
                 setLoading(true)
-                const data = await fetchApi(`${baseUrl}/auto-complete?query=${searchTerm}`)
+                const response = await fetch(
+                    `${baseUrl}/auto-complete?query=${searchTerm}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-RapidAPI-Host': 'bayut.p.rapidapi.com',
+                            'X-RapidAPI-Key': '802ee5a3b2mshf94851c5699e858p191219jsn3dee320c2fa3'
+                        }
+                    }
+                )
+                const data = await response.json()
                 setLoading(false)
                 setLocationData(data?.hits)
             } 
@@ -83,8 +92,8 @@ const SearchFilters = () => {
                                 onClick={() => setSearchTerm('')}
                             />
                         }
-                        {loading && <Spinner margin='auto' marginTop='3' />}
-                        {locationData && <Box maxHeight='300' overflow='auto' w='320px'>
+                        {loading && <Spinner margin='auto' marginTop='2' />}
+                        {locationData && <Box maxHeight='300' overflow='auto' w='320px' marginTop={loading?2:0}>
                             {locationData?.map(location => (
                                 <Box
                                     key={location.id}
